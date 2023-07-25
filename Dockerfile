@@ -12,7 +12,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 RUN /usr/bin/crontab /etc/cron.d/crontab && touch /app/cron.log
 
-ARG ZEABUR_API_TOKEN
-ENV ZEABUR_API_TOKEN=${ZEABUR_API_TOKEN}
-
 CMD cron -f & tail -f /app/cron.log
