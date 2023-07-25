@@ -2,14 +2,22 @@ import os
 
 import requests
 from dotenv import load_dotenv
+from datetime import datetime
+
 
 load_dotenv()
 
 
 def checkin() -> str:
-    url = 'https://gateway.zeabur.com/graphql'
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
     token = os.getenv('ZEABUR_API_TOKEN')
-    print(f'token:{token}\n')
+    if token is None:
+        print(f'{now} token must not be none!')
+        return
+
+    url = 'https://gateway.zeabur.com/graphql'
+    
     body = {
         "operationName": "CheckIn",
         "variables": {},
@@ -17,5 +25,12 @@ def checkin() -> str:
     }
     headers = {"authorization": f"Bearer {token}"}
     resp = requests.post(url, json=body, headers=headers)
-    print(resp.json())
+ 
+    
+    output = f'{now} {token[:15] + "..."} {resp.json()}\n'
+    print(output)
+
     return resp.json()
+
+if __name__ == "__main__":
+    checkin()
