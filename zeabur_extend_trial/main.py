@@ -27,7 +27,7 @@ def checkin() -> str:
     resp = requests.post(url, json=body, headers=headers)
  
     
-    output = f'{now} {token[:15] + "..."} {resp.json()}\n'
+    output = f'{now} {token[:15] + "..."} {resp.json()}'
     print(output)
 
     return resp.json()
