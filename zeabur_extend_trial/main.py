@@ -11,10 +11,12 @@ load_dotenv()
 def checkin() -> str:
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    token = os.getenv('ZEABUR_API_TOKEN')
-    if token is None:
+    token_str = os.getenv('ZEABUR_API_TOKEN')
+    if token_str is None:
         print(f'{now} token must not be none!')
         return
+
+    tokens = token_str.split(",")    
 
     url = 'https://gateway.zeabur.com/graphql'
     
@@ -23,14 +25,13 @@ def checkin() -> str:
         "variables": {},
         "query": "mutation CheckIn {\n  checkIn\n}",
     }
-    headers = {"authorization": f"Bearer {token}"}
-    resp = requests.post(url, json=body, headers=headers)
- 
     
-    output = f'{now} {token[:15] + "..."} {resp.json()}'
-    print(output)
+    for token in tokens:
+        headers = {"authorization": f"Bearer {token}"}
+        resp = requests.post(url, json=body, headers=headers)
+        output = f'{now} {token[:15] + "..."} {resp.json()}'
+        print(output)
 
-    return resp.json()
 
 if __name__ == "__main__":
     checkin()

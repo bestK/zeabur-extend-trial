@@ -15,4 +15,4 @@ dev:
 	poetry run dev
 
 start:
-	poetry run start
+	poetry run python zeabur_extend_trial/main.py
